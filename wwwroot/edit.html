@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html,body {
+            height: 100%;
+        }
+        body {
+            background-image: url('./bg.jpg');
+        }
+        header {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            top: 0;
+            left: 0;
+            border-bottom: 2px solid gray;
+        }
+        header>h2 {
+            text-align: center;
+            cursor: pointer;
+        }
+        main {
+            height: calc(100% - 80px);
+        }
+        #text{
+            margin: 0 calc(50% - 410px);
+        }
+        footer {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid gray;
+        }
+        /* p {
+            height: 40px;
+            line-height: 40px;
+            width: 94%;
+            margin: 0 auto;
+            border-bottom: 2px solid gray;
+            display: flex;
+            justify-content: space-between;
+        } */
+        .icon{
+            width: 30px;
+            height: 30px;
+            margin-left: 15px;
+            cursor: pointer;
+            background-size: cover;
+            background-image: url('./check.jpg');
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>备忘录</h2>
+    </header>
+    <main>
+        <textarea name="" id="text" cols="100" rows="25"></textarea>
+    </main>
+    <footer>
+        <span class="icon"></span></span>
+    </footer>
+
+    <script src="./jquery-3.2.1.js"></script>
+    <script>
+        $('h2').click(function(){
+            location.href="add.html";
+        })
+        $('.icon').click(function(){
+            var text=$('#text').val();
+            $.get('/edit','text='+text,(data)=>{
+                if(data.code==1){
+                    console.log(data.msg);
+                    location.href="add.html";
+                }else{
+                    console.log(data.msg);
+                }
+            })
+        })
+    </script>
+</body>
+</html>

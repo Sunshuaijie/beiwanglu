@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {  
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            background-image: url('./bg.jpg');
+        }
+
+        header {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            top: 0;
+            left: 0;
+            border-bottom: 2px solid gray;
+        }
+
+        header>h2 {
+            text-align: center;
+        }
+
+        main {
+            height: calc(100% - 80px);
+        }
+
+        footer {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid gray;
+        }
+
+        .creatfile {
+            color: orangered;
+            cursor: pointer;
+        }
+        p {
+            height: 40px;
+            line-height: 40px;
+            width: 94%;
+            margin: 0 auto;
+            border-bottom: 2px solid gray;
+            display: flex;
+            justify-content: space-between;
+        }
+        .edit {
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>备忘录</h2>
+    </header>
+    <main>
+ 
+    </main>
+    <footer>
+        <span>&emsp;</span><span class="creatfile">新建文件</span>
+    </footer>
+
+    <script src="./jquery-3.2.1.js"></script>
+    <script>
+        //show my mangerment
+        var str = '';
+        $.post('/show', (data) => {
+            if (data.code == 1) {
+                console.log(data)
+                var arr=data.data1;
+                for (var i = 0; i < arr.length; i++) {
+                    str += `
+                        <p>
+                            <span class="edit">${arr[i].fileName}</span><span>${arr[i].length}&ensp;&gt;</span>    
+                        </p>
+                    `;
+                }
+                $('main').html(str);
+                str='';
+            } else {
+                console.log(data);
+            }
+            $('.edit').click(function (item,index) {
+                //-----------selfile--------------
+                var selfile=$(this).text();
+                // console.log(selfile);
+                $.get('/selfile','selfile='+selfile,(data)=>{
+                    // console.log(data);
+                    location.href="add.html"
+                })
+            })
+        })
+
+        var filename;
+        $('.creatfile').click(function () {
+            filename = prompt("设置文件名", "");
+            if (filename != null && filename != "") {
+                // console.log(filename);
+                $.post('/creat', 'name=' + filename, (data) => {
+                    if (data.code == 1) {
+                        location.href="/";
+                    } else {
+                        console.log(data.msg);
+                    }
+                })
+            }
+        })
+
+    </script>
+</body>
+
+</html>

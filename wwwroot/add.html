@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html,body {
+            height: 100%;  
+        }
+        body {
+            background-image: url('./bg.jpg');
+        }
+        header {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            top: 0;
+            left: 0;
+            border-bottom: 2px solid gray;
+        }
+        header>h2 {
+            text-align: center;
+            cursor: pointer;
+        }
+        main {
+            height: calc(100% - 80px);
+        }
+        #text{
+            margin: 0 calc(50% - 410px);
+        }
+        footer {
+            height: 40px;
+            line-height: 40px;
+            position: relative;
+            bottom: 0;
+            left: 0;
+            display: flex;
+            justify-content: space-between;
+            border-top: 2px solid gray;
+        }
+        p {
+            height: 40px;
+            line-height: 40px;
+            width: 94%;
+            margin: 0 auto;
+            border-bottom: 2px solid gray;
+            display: flex;
+            justify-content: space-between;
+        }
+        .icon{
+            width: 30px;
+            height: 30px;
+            margin-left: 15px;
+            cursor: pointer;
+            background-size: cover;
+            background-image: url('./new.jpg');
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>备忘录</h2>
+    </header>
+    <main>
+        <!-- <textarea name="" id="text" cols="100" rows="25"></textarea> -->
+    </main>
+    <footer>
+        <span class="icon"></span></span>
+    </footer>
+
+    <script src="./jquery-3.2.1.js"></script>
+    <script>
+        $('.icon').click(function(){
+            location.href="edit.html";
+        })
+        $('h2').click(function(){
+            location.href="/";
+        })
+
+        $.post('/add',(data)=>{
+            var str=''; 
+            if(data.code==1){
+                console.log(data.msg);
+                console.log(data);
+                // var data=data.data;
+                for(var i=0;i<data.data.length;i++){
+                    str+=`
+                        <p>
+                            <span class="add">${data.data[i]}</span><span></span>    
+                        </p>
+                    `
+                }
+                $('main').html(str);
+                str='';
+                $('h2').text('备忘录--'+data.selfile);
+                $('.add').click(function(item,index){
+                    var text1=$(this).text();
+                    console.log(text1);
+                    $.get('/add1','text1='+text1,(data)=>{
+                        
+                    })
+                    // location.href="edit.html"
+                })
+            }else{
+                console.log(data.data.msg);
+            }
+        })
+    </script>
+    
+</body>
+</html>
